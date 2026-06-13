@@ -3,9 +3,30 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    environment:
+      TZ: ${TZ:-Europe/Moscow}
     networks:
       - backend-network
-    restart: always
+    expose:
+      - "8081"
+    restart: unless-stopped
+    read_only: true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: 256M
+        reservations:
+          cpus: "0.05"
+          memory: 64M
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8081/health"]
       interval: 10s
@@ -17,24 +38,56 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    environment:
+      TZ: ${TZ:-Europe/Moscow}
     networks:
       - frontend-network
     volumes:
       - frontend_static:/app/static
     restart: no
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
 
   nginx:
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    ports:
-      - "80:80"
+    environment:
+      TZ: ${TZ:-Europe/Moscow}
     networks:
       - backend-network
       - frontend-network
+    ports:
+      - "80:80"
     volumes:
       - frontend_static:/app/static
-    restart: always
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp,size=64m,mode=1777
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 128M
+        reservations:
+          cpus: "0.05"
+          memory: 32M
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:80/momo-store/"]
       interval: 10s
