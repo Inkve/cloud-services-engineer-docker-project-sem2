@@ -12,7 +12,12 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o server-app ./cmd/api
 FROM alpine:3.22
 WORKDIR /app
 
-COPY --from=builder /app/server-app .
+RUN addgroup -S app_group && \
+    adduser -S -s /sbin/nologin -G app_group app_user
+
+COPY --from=builder --chown=app_user:app_group /app/server-app .
+
+USER app_user
 
 EXPOSE 8081
 CMD ["./server-app"]
