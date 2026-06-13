@@ -1,4 +1,4 @@
-FROM nginx:1.31.0-alpine-slim
+FROM nginx:stable-alpine3.21-slim
 
 RUN rm /etc/nginx/conf.d/default.conf
 
