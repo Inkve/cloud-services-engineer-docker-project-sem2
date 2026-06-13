@@ -1,0 +1,44 @@
+services:
+  backend:
+    container_name: momo-store-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    networks:
+      - backend-network
+    restart: always
+
+  frontend:
+    container_name: momo-store-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    networks:
+      - frontend-network
+    volumes:
+      - frontend_static:/app/static
+    restart: no
+
+  nginx:
+    container_name: momo-store-gateway
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - backend-network
+      - frontend-network
+    volumes:
+      - frontend_static:/app/static
+    restart: always
+
+volumes:
+  frontend_static:
+    
+networks:
+  backend-network:
+    driver: bridge
+    internal: true
+  frontend-network:
+    driver: bridge
