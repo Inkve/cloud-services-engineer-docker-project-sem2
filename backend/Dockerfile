@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.24 AS builder
+FROM golang:1.26-alpine AS builder
 WORKDIR /app
 
 COPY go.mod go.sum ./
@@ -9,7 +9,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -o server-app ./cmd/api
 
 # Runtime stage
-FROM alpine:3.22
+FROM alpine:3.21.7
 WORKDIR /app
 
 RUN addgroup -S app_group && \
