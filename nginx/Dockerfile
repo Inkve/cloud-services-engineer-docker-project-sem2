@@ -17,3 +17,6 @@ RUN chown -R nginx_user:nginx_user /var/cache/nginx && \
 USER nginx_user
 
 EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+    CMD wget -q -O /dev/null http://localhost/ || exit 1
