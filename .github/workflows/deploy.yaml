@@ -43,6 +43,11 @@ jobs:
             push: true
             tags: ${{ secrets.DOCKER_USER }}/docker-project-nginx:latest
 
+  scan_images_trivy:
+      needs: [build_and_push_to_docker_hub]
+      name: Run Trivy
+      runs-on: ubuntu-latest
+      steps:
         - name: Run Trivy vulnerability scanner on Backend image
           uses: aquasecurity/trivy-action@v0.36.0
           with:
@@ -74,6 +79,7 @@ jobs:
             severity: 'CRITICAL,HIGH'
 
   run-with-docker-compose:
+    needs: [scan_images_trivy]
     name: Push Docker image to DockerHub
     runs-on: ubuntu-latest
     steps:
