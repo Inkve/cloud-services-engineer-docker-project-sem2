@@ -31,6 +31,12 @@ jobs:
             context: ./frontend/
             push: true
             tags: ${{ secrets.DOCKER_USER }}/docker-project-frontend:latest
+        - name: Push Nginx to DockerHub
+          uses: docker/build-push-action@v4
+          with:
+            context: ./nginx/
+            push: true
+            tags: ${{ secrets.DOCKER_USER }}/docker-project-nginx:latest
 
   run-with-docker-compose:
     name: Push Docker image to DockerHub

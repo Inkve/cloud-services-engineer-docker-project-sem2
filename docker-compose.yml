@@ -1,6 +1,5 @@
 services:
   backend:
-    container_name: momo-store-backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -9,7 +8,6 @@ services:
     restart: always
 
   frontend:
-    container_name: momo-store-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -20,7 +18,6 @@ services:
     restart: no
 
   nginx:
-    container_name: momo-store-gateway
     build:
       context: ./nginx
       dockerfile: Dockerfile
