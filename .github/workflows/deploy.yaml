@@ -85,12 +85,20 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
+      - name: Create .env.prod
+        run: |
+          cat > .env.prod << EOF
+          TZ=Europe/Moscow
+          NGINX_PORT=80
+          DOCKER_USER=${{ secrets.DOCKER_USER }}
+          EOF
+
       - name: Build via Docker Compose
         uses: hoverkraft-tech/compose-action@v2.2.0
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
         with:
           compose-file: "./docker-compose.prod.yml"
           up-flags: "--build"
