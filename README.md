@@ -6,22 +6,22 @@
 ---
 Проект состоит из трех образов (контейнеров):
 1) [backend](backend/Dockerfile)
-   - Go сервер,
-   - порт 8081,
-   - healthcheck - проверка эндпоинта /health,
-   - постоянный перезапуск до отмены пользователем,
-   - [.dockerignore](backend/.dockerignore);
+   - Go сервер;
+   - порт 8081;
+   - healthcheck - проверка эндпоинта /health;
+   - постоянный перезапуск до отмены пользователем;
+   - [.dockerignore](backend/.dockerignore).
 2) [frontend](frontend/Dockerfile)
-   - статичные файлы,
-   - завершение без перезапуска,
-   - [.dockerignore](frontend/.dockerignore);
+   - статичные файлы;
+   - завершение без перезапуска;
+   - [.dockerignore](frontend/.dockerignore).
 3) [nginx](nginx/Dockerfile)
-   - nginx сервер,
-   - отдача статики frontend,
-   - проксирование запросов в backend, 
-   - порт 80,
-   - зависит от frontend и backend,
-   - healthcheck состояния,
+   - nginx сервер;
+   - отдача статики frontend;
+   - проксирование запросов в backend;
+   - порт 80;
+   - зависит от frontend и backend;
+   - healthcheck состояния;
    - постоянный перезапуск до отмены пользователем.
   
 ---
@@ -130,28 +130,28 @@
 
 Сценарии использования:
 1) Локальная сборка (например, для разработки)
-   - [docker-compose.yml](docker-compose.yml)
-   - [пример файла переменных окружения](.env.example.dev)
-   - сборка docker-образов с нуля
-   - открыта возможность подключения к backend-контейнеру
-   - Пример запуска: `docker compose -f docker-compose.yml up --build`
+   - [docker-compose.yml](docker-compose.yml);
+   - [пример файла переменных окружения](.env.example.dev);
+   - сборка docker-образов с нуля;
+   - открыта возможность подключения к backend-контейнеру;
+   - Пример запуска: `docker compose -f docker-compose.yml up --build`.
 2) Production использование
-   - [docker-compose.prod.yml](docker-compose.prod.yml)
-   - [пример файла переменных окружения](.env.example.prod)
-   - использование готовых образов из dockerhub
-   - Пример запуска: `docker compose -f docker-compose.prod.yml up --build`
+   - [docker-compose.prod.yml](docker-compose.prod.yml);
+   - [пример файла переменных окружения](.env.example.prod);
+   - использование готовых образов из dockerhub;
+   - Пример запуска: `docker compose -f docker-compose.prod.yml up --build`.
 
 Переменные окружения и секреты
 Для гибкости конфигурации контейнеров введены следующие переменные:
-   - BACKEND_VERSION  - Версия backend приложения
-   - FRONTEND_VERSION - Версия frontend приложения
-   - GO_VERSION       - Версия go
-   - NODE_VERSION=26  - Версия node
-   - TZ               - Часовой пояс
-   - NGINX_PORT       - Внешний порт для доступа к приложению
+   - `BACKEND_VERSION`  - Версия backend приложения;
+   - `FRONTEND_VERSION` - Версия frontend приложения;
+   - `GO_VERSION`       - Версия go;
+   - `NODE_VERSION`     - Версия node;
+   - `TZ`               - Часовой пояс;
+   - `NGINX_PORT`       - Внешний порт для доступа к приложению.
 
 Для конфигурирования сервисов используются переменные окружения, описанные в следующих файлах:
-- [.env.example.dev](./.env.example.dev),
+- [.env.example.dev](./.env.example.dev);
 - [.env.example.prod](./.env.example.dev).
 
 В проекте используются секреты GitHub Actions, .env файлы.
@@ -188,4 +188,3 @@ cloud-services-engineer-docker-project-sem2-nginx-1     inkve/docker-project-ngi
 По результатам запуска командой `docker compose -f docker-compose.prod.yml up --build --scale backend=3` (использование production docker-compose файла и 3-х реплик backend-сервиса) и измененным `NGINX_PORT=81` в .env файле наблюдаем корректную работу приложения
 
 ![Скриншот](image.png)
-
