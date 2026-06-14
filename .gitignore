@@ -17,3 +17,7 @@ vendor/
 .vscode/
 .DS_Store
 *.tgz
+
+# Environment files
+.env
+.env.prod

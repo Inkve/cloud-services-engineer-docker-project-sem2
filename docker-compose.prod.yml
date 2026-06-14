@@ -1,15 +1,13 @@
 services:
   backend:
-    env_file: .env
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    env_file: .env.prod
+    image: ${DOCKER_USER}/docker-project-backend:latest
     environment:
       TZ: ${TZ:-Europe/Moscow}
     networks:
       - backend-network
-    ports:
-      - "${BACKEND_PORT:-8081}:8081"
+    expose:
+      - "8081"
     restart: unless-stopped
     read_only: true
     cap_drop:
@@ -36,10 +34,8 @@ services:
       start_period: 5s
 
   frontend:
-    env_file: .env
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    env_file: .env.prod
+    image: ${DOCKER_USER}/docker-project-frontend:latest
     environment:
       TZ: ${TZ:-Europe/Moscow}
     networks:
@@ -56,10 +52,8 @@ services:
       - no-new-privileges:true
 
   nginx:
-    env_file: .env
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
+    env_file: .env.prod
+    image: ${DOCKER_USER}/docker-project-nginx:latest
     environment:
       TZ: ${TZ:-Europe/Moscow}
     networks:
@@ -104,5 +98,6 @@ volumes:
 networks:
   backend-network:
     driver: bridge
+    internal: true
   frontend-network:
     driver: bridge
