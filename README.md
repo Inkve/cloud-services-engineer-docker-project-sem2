@@ -141,7 +141,7 @@
    - использование готовых образов из dockerhub;
    - Пример запуска: `docker compose -f docker-compose.prod.yml up --build`.
 
-Переменные окружения и секреты
+Переменные окружения и секреты:
 Для гибкости конфигурации контейнеров введены следующие переменные:
    - `BACKEND_VERSION`  - Версия backend приложения;
    - `FRONTEND_VERSION` - Версия frontend приложения;
@@ -162,15 +162,15 @@
 > При необходимости во время развития проекта можно добавлять переменные, например, для backend-приложения.
 
 Горизонтальное масштабирование
-  - Несколько реплик сервиса backend поднимаются флагом --scale;
+  - Несколько реплик сервиса backend поднимаются флагом `--scale service_name=service_count`;
   - Контейнер nginx проксирует запросы к /api на имя сервиса backend в Docker-сети; 
-  - Встроенный DNS при нескольких репликах отдаёт несколько адресов, а в frontend/nginx/default.conf включены resolver 127.0.0.11 и proxy_pass через переменную, чтобы nginx периодически заново резолвил имя и распределял нагрузку между инстансами.
+  - Встроенный DNS при нескольких репликах отдаёт несколько адресов, а в nginx/nginx.conf включены resolver 127.0.0.11 и proxy_pass через переменную, чтобы nginx периодически заново резолвил имя и распределял нагрузку между репликами сервиса.
 
 Пример запуска с 3 репликами backend:
 ```bash
 docker compose -f docker-compose.prod.yml up --build --scale backend=3
 ```
-В результате
+В результате запуска:
 ```bash
 NAME                                                    IMAGE                                 COMMAND                  SERVICE   CREATED          STATUS                    PORTS
 cloud-services-engineer-docker-project-sem2-backend-1   inkve/docker-project-backend:latest   "./server-app"           backend   14 minutes ago   Up 17 seconds (healthy)   8081/tcp
