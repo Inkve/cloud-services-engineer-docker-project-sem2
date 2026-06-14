@@ -91,9 +91,7 @@ jobs:
 
       - name: Create .env.prod
         run: |
-          cat > .env.prod << EOF
-          TZ=Europe/Moscow
-          NGINX_PORT=80
+          cat > .env << EOF
           DOCKER_USER=${{ secrets.DOCKER_USER }}
           EOF
 

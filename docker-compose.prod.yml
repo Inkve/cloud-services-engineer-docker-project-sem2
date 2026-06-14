@@ -1,6 +1,6 @@
 services:
   backend:
-    env_file: .env.prod
+    env_file: .env
     image: ${DOCKER_USER}/docker-project-backend:latest
     environment:
       TZ: ${TZ:-Europe/Moscow}
@@ -34,7 +34,7 @@ services:
       start_period: 5s
 
   frontend:
-    env_file: .env.prod
+    env_file: .env
     image: ${DOCKER_USER}/docker-project-frontend:latest
     environment:
       TZ: ${TZ:-Europe/Moscow}
@@ -52,7 +52,7 @@ services:
       - no-new-privileges:true
 
   nginx:
-    env_file: .env.prod
+    env_file: .env
     image: ${DOCKER_USER}/docker-project-nginx:latest
     environment:
       TZ: ${TZ:-Europe/Moscow}

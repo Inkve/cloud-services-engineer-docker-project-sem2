@@ -19,5 +19,5 @@ vendor/
 *.tgz
 
 # Environment files
-.env
-.env.prod
+.env*
+!.env.example*
