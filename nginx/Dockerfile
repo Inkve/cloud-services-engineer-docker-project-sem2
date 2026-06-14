@@ -1,5 +1,6 @@
 FROM nginx:1.31.1-alpine-slim
 
+# Fix CVE-2026-45447
 RUN apk add --no-cache \
     openssl=3.5.7-r0
 

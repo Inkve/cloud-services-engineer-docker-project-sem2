@@ -11,7 +11,12 @@ RUN CGO_ENABLED=0 GOOS=linux \
     -o server-app ./cmd/api
 
 # Runtime stage
-FROM alpine:3.21.7
+FROM alpine:3.24.0
+
+# Fix CVE-2026-45447
+RUN apk add --no-cache \
+    openssl=3.5.7-r0
+
 WORKDIR /app
 
 RUN addgroup -S app_user && \
