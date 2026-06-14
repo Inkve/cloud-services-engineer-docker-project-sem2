@@ -27,7 +27,7 @@ services:
           cpus: "0.05"
           memory: 64M
     healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:8081/health"]
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8081/health"]
       interval: 10s
       timeout: 3s
       retries: 5
@@ -86,7 +86,7 @@ services:
           cpus: "0.05"
           memory: 32M
     healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:80/momo-store/"]
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:80/momo-store/"]
       interval: 10s
       timeout: 3s
       retries: 5
